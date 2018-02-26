@@ -5,20 +5,24 @@ import { AppContainer } from 'react-hot-loader';
 
 import { BrowserRouter } from 'react-router-dom';
 
+import { loadComponents } from  'loadable-components';
+
 
 const rootEl = document.getElementById('root');
 
 const renderApp = () => {
   const App = require('../app/containers/AppContainer');
 
-  ReactDOM.render(
-    <AppContainer>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </AppContainer>,
-    rootEl,
-  );
+  loadComponents().then(() => {
+    ReactDOM.render(
+      <AppContainer>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AppContainer>,
+      rootEl,
+    );
+  });
 };
 
 
@@ -28,7 +32,7 @@ if (module.hot) {
     try {
       renderApp();
     } catch (error) {
-      const RedBox = require('redbox-react').default;
+      const RedBox = require('redbox-react');
       ReactDOM.render(<RedBox error={error} />, rootEl);
     }
   };

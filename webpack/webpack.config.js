@@ -17,7 +17,6 @@ export default {
       app: path.resolve(srcPath, 'app'),
       assets: path.resolve(srcPath, 'assets'),
       config: path.resolve(srcPath, 'config'),
-      webpackConfig: path.resolve(srcPath, 'webpack'),
     }
   },
 
