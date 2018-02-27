@@ -28,7 +28,7 @@ export default {
   },
 
   output: {
-    path: distPath,
+    path: path.resolve(distPath, 'assets'),
     filename: '[name].[hash].js',
     publicPath: '/assets/'
   },
@@ -85,9 +85,5 @@ export default {
 
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      minChunks: Infinity,
-    }),
   ],
 };

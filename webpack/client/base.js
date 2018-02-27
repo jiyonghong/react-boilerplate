@@ -3,6 +3,10 @@ import merge from 'webpack-merge';
 import { client } from 'universal-webpack/config';
 import settings from '../universal-webpack-settings.json';
 import baseConfig from '../webpack.config';
+import loadAppConfig from '../../config';
+
+
+loadAppConfig();
 
 
 const clientConfig = {

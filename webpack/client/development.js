@@ -8,8 +8,14 @@ const baseConfig = getBaseConfig({
   cssBundle: true,
 });
 
+const {
+  WEBPACK_DEV_SERVER_URL,
+  WEBPACK_DEV_SERVER_PORT,
+  PUBLIC_PATH,
+} = process.env;
 
-const webpackDevServerUrl = 'http://localhost:3001';
+
+const webpackDevServerUrl = `${WEBPACK_DEV_SERVER_URL}:${WEBPACK_DEV_SERVER_PORT}`;
 
 
 const baseEntryApp = baseConfig.entry.app.pop();
@@ -32,7 +38,7 @@ const devConfig = {
   },
 
   output: {
-    publicPath: `${webpackDevServerUrl}${baseConfig.output.publicPath}`,
+    publicPath: `${webpackDevServerUrl}${PUBLIC_PATH}`,
   },
 
   plugins: [

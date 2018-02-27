@@ -4,8 +4,14 @@ import { server } from 'universal-webpack/config';
 import settings from '../universal-webpack-settings.json';
 import baseConfig from '../webpack.config';
 
+import loadAppConfig from '../../config';
+
+
+loadAppConfig();
+
 
 const serverConfig = {
+
   plugins: [
     new webpack.DefinePlugin({
       __CLIENT__: false,

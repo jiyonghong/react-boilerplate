@@ -11,6 +11,9 @@ import { getLoadableState } from 'loadable-components/server';
 import App from 'app/containers/AppContainer';
 
 
+const __PROD__ = process.env.NODE_ENV === 'production';
+
+
 class Html extends React.Component {
   static propTypes = {
     // helmet: PropTypes.object.isRequired,
@@ -45,9 +48,8 @@ class Html extends React.Component {
         <body>
           <div id="root">{root}</div>
           {/* <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(state)}` }} /> */}
-          {/* {__PROD__ && <script src={javascript.vendor} />} */}
-          {preloadedAssets.getScriptElement()}          
-          {<script src={javascript.manifest} />}  
+          {__PROD__ && <script src={javascript.vendors} />}
+          {preloadedAssets.getScriptElement()}
           <script src={javascript.app} />
         </body>
       </html>
