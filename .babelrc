@@ -2,6 +2,17 @@
   "presets": ["es2015", "stage-0", "react"],
   "plugins": [
     "react-hot-loader/babel",
-    "add-module-exports"
+    "add-module-exports",
+    "loadable-components/babel",    
+    "syntax-dynamic-import",
+    ["react-css-modules", {
+      "filetypes": {
+        ".scss": {
+          "syntax": "postcss-scss"
+        }
+      },
+      "webpackHotModuleReloading": true,
+      "generateScopedName": "[local]__[hash]"
+    }]
   ]
 }

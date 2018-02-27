@@ -4,13 +4,11 @@ import { PropTypes } from 'prop-types';
 
 import { StaticRouter } from 'react-router';
 
-import serialize from 'serialize-javascript';
+// import serialize from 'serialize-javascript';
+
+import { getLoadableState } from 'loadable-components/server';
 
 import App from 'app/containers/AppContainer';
-
-
-const getProdStyles = styles => Object.keys(styles)
-  .map(key => <link key={key} rel="stylesheet" href={styles[key]} />);
 
 
 class Html extends React.Component {
@@ -19,11 +17,8 @@ class Html extends React.Component {
     // state: PropTypes.object.isRequired,
     root: PropTypes.object.isRequired,
     // context: PropTypes.object.isRequired,
+    preloadedAssets: PropTypes.object.isRequired,
     assets: PropTypes.object.isRequired,
-  }
-
-  static defaultProps = {
-    assets: {},
   }
 
   render() {
@@ -32,6 +27,7 @@ class Html extends React.Component {
       // state,
       root,
       // context,
+      preloadedAssets,
       assets: { styles, javascript },
     } = this.props;
 
@@ -44,13 +40,14 @@ class Html extends React.Component {
           {/* {helmet.meta.toComponent()} */}
           {/* {helmet.title.toComponent()} */}
           {/* {helmet.link.toComponent()} */}
-          {getProdStyles(styles)}
-          {/* {__PROD__ && <script src={javascript.manifest} />} */}
+          <link rel="stylesheet" href={styles.app} />
         </head>
         <body>
           <div id="root">{root}</div>
           {/* <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(state)}` }} /> */}
           {/* {__PROD__ && <script src={javascript.vendor} />} */}
+          {preloadedAssets.getScriptElement()}          
+          {<script src={javascript.manifest} />}  
           <script src={javascript.app} />
         </body>
       </html>
@@ -68,15 +65,20 @@ export default assets => (req, res) => {
   );
 
   if (context.url) {
-    return res.redirect(301, context.url);
+    res.redirect(301, context.url);
+    return;
   }
 
-  const html = renderToString((
-    <Html
-      root={root}
-      assets={assets}
-    />
-  ));
+  getLoadableState(root)
+    .then((preloadedAssets) => {
+      const html = renderToString((
+        <Html
+          root={root}
+          preloadedAssets={preloadedAssets}
+          assets={assets}
+        />
+      ));
 
-  res.send(`<!DOCTYPE html>${html}`);
+      res.send(`<!DOCTYPE html>${html}`);
+    });
 };

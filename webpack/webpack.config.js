@@ -17,7 +17,6 @@ export default {
       app: path.resolve(srcPath, 'app'),
       assets: path.resolve(srcPath, 'assets'),
       config: path.resolve(srcPath, 'config'),
-      webpackConfig: path.resolve(srcPath, 'webpack'),
     }
   },
 
@@ -49,7 +48,39 @@ export default {
         include: srcPath,
         exclude: /node_modules/,
       },
-    ]
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              localIdentName: '[local]__[hash]',
+              importLoaders: 2,
+              sourceMap: true,
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              sourceMap: true,
+              config: {
+                path: path.resolve(rootPath, 'postcss.config.js'),
+              }
+            },
+          },
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            }
+          },
+        ],
+      },
+    ],
   },
 
   plugins: [

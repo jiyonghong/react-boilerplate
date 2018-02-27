@@ -5,6 +5,7 @@ import getBaseConfig from './base';
 
 const baseConfig = getBaseConfig({
   development: true,
+  cssBundle: true,
 });
 
 
