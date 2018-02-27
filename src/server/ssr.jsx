@@ -11,10 +11,6 @@ import { getLoadableState } from 'loadable-components/server';
 import App from 'app/containers/AppContainer';
 
 
-const getProdStyles = styles => Object.keys(styles)
-  .map(key => <link key={key} rel="stylesheet" href={styles[key]} />);
-
-
 class Html extends React.Component {
   static propTypes = {
     // helmet: PropTypes.object.isRequired,
@@ -44,7 +40,7 @@ class Html extends React.Component {
           {/* {helmet.meta.toComponent()} */}
           {/* {helmet.title.toComponent()} */}
           {/* {helmet.link.toComponent()} */}
-          {getProdStyles(styles)}
+          <link rel="stylesheet" href={styles.app} />
         </head>
         <body>
           <div id="root">{root}</div>

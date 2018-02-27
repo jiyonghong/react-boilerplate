@@ -2,11 +2,16 @@ import React from 'react';
 
 import { Link } from 'react-router-dom';
 
+import './style.scss';
+
 
 class Other extends React.Component {
   render() {
     return (
-      <h1>Other <Link to="/">go to home</Link></h1>
+      <div>
+        <h1 styleName="blue">Other</h1>
+        <Link to="/">go to home</Link>
+      </div>
     )
   }
 }
