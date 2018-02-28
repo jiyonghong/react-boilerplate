@@ -3,10 +3,9 @@ import bodyParser from 'body-parser';
 import hpp from 'hpp';
 
 import path from 'path';
+import loadConfig from 'config';
 
 import ssr from './ssr';
-
-import loadConfig from '../../config';
 
 
 loadConfig();

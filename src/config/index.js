@@ -6,8 +6,9 @@ import path from 'path';
 
 export default () => {
   const APP_ENV = process.env.APP_ENV || 'local';
-  const configPath = __dirname.includes('dist')
-    ? path.resolve(__dirname, '../../config') : __dirname;
+  // production build check
+  const configPath = __filename.includes('dist/server/server.js')
+    ? path.resolve(__dirname, '../../src/config') : __dirname;
 
   const dotenvFiles = [
     path.resolve(configPath, '.env.default'),
