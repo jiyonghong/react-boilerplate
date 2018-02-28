@@ -1,6 +1,6 @@
-### React Boilerplate
+# React Boilerplate
 
-#### tested on node v8.9.4
+tested on node v8.9.4
 
 
 ### Includes
