@@ -44,6 +44,9 @@ const devConfig = {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      __DEVTOOLS__: true,
+    })
   ],
 };
 

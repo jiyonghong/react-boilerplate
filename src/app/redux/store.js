@@ -1,17 +1,30 @@
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { routerMiddleware } from 'react-router-redux';
 
-import rootReducer from './reducer';
+import DevTools from 'app/components/DevTools';
+
+import rootReducers from './reducers';
 
 
 export default (history, initialState = {}) => {
-  const middlewares = [
+  const middlewares = applyMiddleware(
     routerMiddleware(history),
-  ];
-
-  return createStore(
-    rootReducer,
-    initialState,
-    applyMiddleware(...middlewares),
   );
+
+  const store = createStore(
+    rootReducers,
+    initialState,
+    compose(
+      middlewares,
+      __DEVTOOLS__ ? DevTools.instrument() : f => f,
+    ),
+  );
+
+  if (module.hot) {
+    module.hot.accept('./reducers', () => {
+      store.replaceReducer(require('./reducers'));
+    });
+  }
+
+  return store;
 }

@@ -34,7 +34,7 @@
     "node": true
   },
   "globals": {
-    "API_URL": true
+    "__DEVTOOLS__": true
   },
   "settings": {
     "import/parser": "babel-eslint",

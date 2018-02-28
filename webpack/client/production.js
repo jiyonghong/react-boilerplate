@@ -6,6 +6,7 @@ import getBaseConfig from './base';
 
 
 const baseConfig = getBaseConfig({
+  development: false,
   cssBundle: true,
 });
 
@@ -48,6 +49,9 @@ const prodConfig = {
       filename: '[name].[hash].js',
       minChunks: Infinity,
     }),
+    new webpack.DefinePlugin({
+      __DEVTOOLS__: false,
+    })
   ]
 }
 

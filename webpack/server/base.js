@@ -16,6 +16,7 @@ const serverConfig = {
     new webpack.DefinePlugin({
       __CLIENT__: false,
       __SERVER__: true,
+      __DEVTOOLS__: false,
     }),
     new webpack.EnvironmentPlugin({
       NODE_ENV: 'development',

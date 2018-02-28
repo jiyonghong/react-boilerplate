@@ -10,21 +10,31 @@ import createHistory from 'history/createBrowserHistory';
 
 import { loadComponents } from  'loadable-components';
 
+import DevTools from 'app/components/DevTools';
+
 
 const history = createHistory();
 const store = createStore(history, window.__INITIAL_STATE__);
 
 const rootEl = document.getElementById('root');
 
+
 const renderApp = () => {
   const App = require('../app/containers/AppContainer');
+  const AppWithDevTools = __DEVTOOLS__ ? () => (
+    <div>
+      <App />
+      <DevTools />
+    </div>
+  ) : App;
+
 
   loadComponents().then(() => {
     ReactDOM.hydrate(
       <AppContainer>
         <Provider store={store}>
           <ConnectedRouter history={history}>
-            <App />
+            <AppWithDevTools />
           </ConnectedRouter>
         </Provider>
       </AppContainer>,
