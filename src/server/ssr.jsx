@@ -4,7 +4,11 @@ import { PropTypes } from 'prop-types';
 
 import { StaticRouter } from 'react-router';
 
-// import serialize from 'serialize-javascript';
+import serialize from 'serialize-javascript';
+
+import { Provider } from 'react-redux';
+import createStore from 'app/redux/store';
+import createHistory from 'history/createMemoryHistory';
 
 import { getLoadableState } from 'loadable-components/server';
 
@@ -17,9 +21,8 @@ const __PROD__ = process.env.NODE_ENV === 'production';
 class Html extends React.Component {
   static propTypes = {
     // helmet: PropTypes.object.isRequired,
-    // state: PropTypes.object.isRequired,
     root: PropTypes.object.isRequired,
-    // context: PropTypes.object.isRequired,
+    state: PropTypes.object.isRequired,    
     preloadedAssets: PropTypes.object.isRequired,
     assets: PropTypes.object.isRequired,
   }
@@ -27,9 +30,8 @@ class Html extends React.Component {
   render() {
     const {
       // helmet,
-      // state,
       root,
-      // context,
+      state,      
       preloadedAssets,
       assets: { styles, javascript },
     } = this.props;
@@ -47,7 +49,7 @@ class Html extends React.Component {
         </head>
         <body>
           <div id="root">{root}</div>
-          {/* <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(state)}` }} /> */}
+          <script dangerouslySetInnerHTML={{ __html: `window.__INITIAL_STATE__ = ${serialize(state)}` }} />
           {__PROD__ && <script src={javascript.vendors} />}
           {preloadedAssets.getScriptElement()}
           <script src={javascript.app} />
@@ -59,12 +61,18 @@ class Html extends React.Component {
 
 
 export default assets => (req, res) => {
+  const history = createHistory();
+  const store = createStore(history);
+
   const context = {};
   const root = (
-    <StaticRouter location={req.url} context={context}>
-      <App />
-    </StaticRouter>
+    <Provider store={store}>
+      <StaticRouter location={req.url} context={context}>
+        <App />
+      </StaticRouter>
+    </Provider>
   );
+
 
   if (context.url) {
     res.redirect(301, context.url);
@@ -73,13 +81,16 @@ export default assets => (req, res) => {
 
   getLoadableState(root)
     .then((preloadedAssets) => {
-      const html = renderToString((
+      const state = store.getState();
+
+      const html = renderToString(
         <Html
           root={root}
+          state={state}
           preloadedAssets={preloadedAssets}
           assets={assets}
-        />
-      ));
+        />,
+      );
 
       res.send(`<!DOCTYPE html>${html}`);
     });

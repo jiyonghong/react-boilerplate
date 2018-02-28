@@ -3,10 +3,16 @@ import ReactDOM from 'react-dom';
 
 import { AppContainer } from 'react-hot-loader';
 
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { ConnectedRouter } from 'react-router-redux';
+import createStore from 'app/redux/store';
+import createHistory from 'history/createBrowserHistory';
 
 import { loadComponents } from  'loadable-components';
 
+
+const history = createHistory();
+const store = createStore(history, window.__INITIAL_STATE__);
 
 const rootEl = document.getElementById('root');
 
@@ -14,11 +20,13 @@ const renderApp = () => {
   const App = require('../app/containers/AppContainer');
 
   loadComponents().then(() => {
-    ReactDOM.render(
+    ReactDOM.hydrate(
       <AppContainer>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
+        <Provider store={store}>
+          <ConnectedRouter history={history}>
+            <App />
+          </ConnectedRouter>
+        </Provider>
       </AppContainer>,
       rootEl,
     );
@@ -29,11 +37,9 @@ const renderApp = () => {
 // hot module reloading
 if (module.hot) {
   const reRenderApp = () => {
-    console.log('hihi')
     try {
       renderApp();
     } catch (error) {
-      console.log('띠용')
       const RedBox = require('redbox-react');
       ReactDOM.render(<RedBox error={error} />, rootEl);
     }

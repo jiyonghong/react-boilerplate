@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import path from 'path';
-import DotenvPlugin from 'dotenv-webpack';
 
 
 const rootPath = path.resolve(__dirname, '../');
@@ -86,8 +85,5 @@ export default {
 
   plugins: [
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new DotenvPlugin({
-      systemvars: true,
-    }),
   ],
 };

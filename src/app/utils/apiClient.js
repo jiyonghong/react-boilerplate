@@ -2,6 +2,7 @@ import request from 'request-promise';
 
 
 const API_URL = process.env.API_URL;
+console.log(API_URL);
 
 
 const requestCreator = (defaultOptions) => (additionalOptions = {}) => {
@@ -28,49 +29,39 @@ class APIClient {
     this.transform = transform || (body => body);
   }
 
-  get(uri, options) {
-    return requestCreator({
+  _getRequestCreatorOrPromise(uri, method, options) {
+    const rc = requestCreator({
       uri,
-      method: 'GET',
+      method,
       transform: this.transform,
       ...options,
     });
+
+    return options.promise ? rc() : rc;
+  }
+
+  get(uri, options) {
+    return this._getRequestCreatorOrPromise(uri, 'GET', options);
   }
 
   post(uri, options) {
-    return requestCreator({
-      uri,
-      method: 'POST',
-      transform: this.transform,
-      ...options,
-    });
+    return this._getRequestCreatorOrPromise(uri, 'POST', options);
+
   }
 
   patch(uri, options) {
-    return requestCreator({
-      uri,
-      method: 'PATCH',
-      transform: this.transform,
-      ...options,
-    });
+    return this._getRequestCreatorOrPromise(uri, 'PATCH', options);
+
   }
 
   put(uri, options) {
-    return requestCreator({
-      uri,
-      method: 'PUT',
-      transform: this.transform,
-      ...options,
-    });
+    return this._getRequestCreatorOrPromise(uri, 'PUT', options);
+
   }
 
   delete(uri, options) {
-    return requestCreator({
-      uri,
-      method: 'DELETE',
-      transform: this.transform,
-      ...options,
-    });
+    return this._getRequestCreatorOrPromise(uri, 'DELETE', options);
+
   }
 }
 

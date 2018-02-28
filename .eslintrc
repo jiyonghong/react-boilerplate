@@ -18,6 +18,7 @@
     "react/prefer-stateless-function": 0,
     "react/forbid-prop-types": 0,
     "react/display-name": 0,
+    "react/no-danger": 0,
     "no-console": [
       1,
       {
@@ -31,6 +32,9 @@
   "env": {
     "browser": true,
     "node": true
+  },
+  "globals": {
+    "API_URL": true
   },
   "settings": {
     "import/parser": "babel-eslint",

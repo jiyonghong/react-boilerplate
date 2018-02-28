@@ -30,10 +30,10 @@ export default (parameters) => {
   const assets = parameters.chunks();
   app.use(ssr(assets));
 
-  app.listen(3000, (err) => {
+  app.listen(process.env.PORT, (err) => {
     if (err) {
       return console.error(err);
     }
-    return console.log('Server listening on 3000');  // eslint-disable-line
+    return console.log(`Server listening on ${process.env.PORT}`);  // eslint-disable-line
   });
 };
